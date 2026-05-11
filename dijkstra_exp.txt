@@ -1,0 +1,538 @@
+---
+
+# WHAT THIS PROGRAM DOES
+
+It finds:
+
+# shortest distance from source node A to all other nodes
+
+using:
+
+# Dijkstra’s Algorithm
+
+---
+
+# GRAPH
+
+```python
+graph = {
+    'A': {'B': 2, 'C': 4},
+    'B': {'A': 2, 'C': 1, 'D': 7},
+    'C': {'A': 4, 'B': 1, 'D': 3},
+    'D': {'B': 7, 'C': 3}
+}
+```
+
+---
+
+# WHAT THIS MEANS
+
+```text id="jlwm1n"
+A → B = 2
+A → C = 4
+B → C = 1
+C → D = 3
+```
+
+etc.
+
+---
+
+# VISUAL GRAPH
+
+```text id="jlwm7k"
+      2
+A -------- B
+|          |
+4          7
+|          |
+C -------- D
+      3
+```
+
+and:
+
+```text id="jlwm5k"
+B → C = 1
+```
+
+also exists.
+
+---
+
+# STEP 1 — CREATE DISTANCE DICTIONARY
+
+```python
+dist = {}
+```
+
+Purpose:
+
+```text id="jlwm8k"
+Store shortest distance of every node
+```
+
+---
+
+# STEP 2 — CREATE VISITED LIST
+
+```python
+visited = []
+```
+
+Purpose:
+
+```text id="jlwm9k"
+Store nodes already processed
+```
+
+---
+
+# STEP 3 — INITIALIZE ALL DISTANCES
+
+```python
+for node in graph:
+    dist[node] = 999
+```
+
+---
+
+# WHY 999?
+
+It represents:
+
+```text id="jlwm3n"
+Infinity / very large value
+```
+
+Meaning:
+
+```text id="jlwm4n"
+Initially we assume all nodes are very far away
+```
+
+---
+
+# AFTER THIS
+
+```python
+dist = {
+    'A': 999,
+    'B': 999,
+    'C': 999,
+    'D': 999
+}
+```
+
+---
+
+# STEP 4 — SOURCE NODE DISTANCE = 0
+
+```python
+dist['A'] = 0
+```
+
+Why?
+
+Because:
+
+```text id="jlwm6n"
+Distance from A to A is always 0
+```
+
+---
+
+# NOW
+
+```python
+dist = {
+    'A': 0,
+    'B': 999,
+    'C': 999,
+    'D': 999
+}
+```
+
+---
+
+# STEP 5 — MAIN LOOP
+
+```python
+while len(visited) < len(graph):
+```
+
+Meaning:
+
+```text id="jlwm2m"
+Continue until all nodes are visited
+```
+
+---
+
+# STEP 6 — FIND NEAREST UNVISITED NODE
+
+```python
+min_node = None
+```
+
+This variable stores:
+
+```text id="jlwm0m"
+current nearest node
+```
+
+---
+
+# LOOP THROUGH ALL NODES
+
+```python
+for node in graph:
+```
+
+---
+
+# CHECK UNVISITED NODE
+
+```python
+if node not in visited:
+```
+
+Ignore already processed nodes.
+
+---
+
+# FIND SMALLEST DISTANCE NODE
+
+```python
+if min_node is None or dist[node] < dist[min_node]:
+```
+
+Meaning:
+
+```text id="jlwm9m"
+Found a node with smaller distance?
+```
+
+If yes:
+
+```python
+min_node = node
+```
+
+---
+
+# FIRST ITERATION
+
+Distances:
+
+```python
+A = 0
+B = 999
+C = 999
+D = 999
+```
+
+Smallest:
+
+```text id="jlwm8m"
+A
+```
+
+So:
+
+```python
+min_node = 'A'
+```
+
+---
+
+# STEP 7 — MARK NODE VISITED
+
+```python
+visited.append(min_node)
+```
+
+Now:
+
+```python
+visited = ['A']
+```
+
+Meaning:
+
+```text id="jlwm7m"
+A is completely processed
+```
+
+---
+
+# STEP 8 — CHECK NEIGHBOURS
+
+```python
+for neighbour in graph[min_node]:
+```
+
+Suppose:
+
+```python
+min_node = 'A'
+```
+
+Then:
+
+```python
+graph['A']
+```
+
+becomes:
+
+```python
+{'B': 2, 'C': 4}
+```
+
+Meaning:
+
+```text id="jlwm6m"
+A is connected to B and C
+```
+
+---
+
+# STEP 9 — CALCULATE NEW DISTANCE
+
+```python
+new_dist = dist[min_node] + graph[min_node][neighbour]
+```
+
+This is the MOST IMPORTANT LINE.
+
+---
+
+# UNDERSTAND IT CAREFULLY
+
+Suppose:
+
+```python
+min_node = 'A'
+neighbour = 'B'
+```
+
+Then:
+
+```python
+dist['A'] = 0
+graph['A']['B'] = 2
+```
+
+So:
+
+```python
+new_dist = 0 + 2 = 2
+```
+
+Meaning:
+
+```text id="jlwm5m"
+Distance from A to B through current path = 2
+```
+
+---
+
+# NEXT
+
+For C:
+
+```python
+new_dist = 0 + 4 = 4
+```
+
+---
+
+# STEP 10 — UPDATE SHORTER PATH
+
+```python
+if new_dist < dist[neighbour]:
+```
+
+Meaning:
+
+```text id="jlwm4m"
+Did we find a shorter path?
+```
+
+---
+
+# EXAMPLE
+
+Initially:
+
+```python
+dist['B'] = 999
+```
+
+New distance:
+
+```python
+2
+```
+
+Since:
+
+```python
+2 < 999
+```
+
+Update:
+
+```python
+dist['B'] = 2
+```
+
+---
+
+# AFTER FIRST ITERATION
+
+```python
+dist = {
+    'A': 0,
+    'B': 2,
+    'C': 4,
+    'D': 999
+}
+```
+
+---
+
+# SECOND ITERATION
+
+Nearest unvisited node:
+
+```text id="jlwm3m"
+B
+```
+
+because:
+
+```python
+dist['B'] = 2
+```
+
+---
+
+# FROM B
+
+Possible path to C:
+
+```python
+2 + 1 = 3
+```
+
+Old distance to C:
+
+```python
+4
+```
+
+Since:
+
+```python
+3 < 4
+```
+
+Update:
+
+```python
+dist['C'] = 3
+```
+
+---
+
+# THIS IS THE MAIN MAGIC OF DIJKSTRA
+
+It keeps improving shortest paths.
+
+---
+
+# FINAL OUTPUT
+
+```python
+{
+    'A': 0,
+    'B': 2,
+    'C': 3,
+    'D': 6
+}
+```
+
+Meaning:
+
+| Node | Shortest Distance from A |
+| ---- | ------------------------ |
+| A    | 0                        |
+| B    | 2                        |
+| C    | 3                        |
+| D    | 6                        |
+
+---
+
+# ENTIRE ALGORITHM IN SIMPLE ENGLISH
+
+```text id="jlwm2n"
+1. Start from source node
+2. Mark source distance as 0
+3. Find nearest unvisited node
+4. Check all neighbours
+5. Update shorter distances
+6. Mark node visited
+7. Repeat
+```
+
+That is Dijkstra.
+
+---
+
+# MOST IMPORTANT MEMORY LINE
+
+Think of Dijkstra as:
+
+```text id="jlwm1m"
+"Keep expanding the nearest node."
+```
+
+That single sentence explains the whole algorithm.
+
+---
+
+# VERY IMPORTANT VIVA QUESTIONS
+
+---
+
+# Q1. Why use visited list?
+
+To avoid processing same node repeatedly.
+
+---
+
+# Q2. Why initialize with 999?
+
+Represents infinity.
+
+---
+
+# Q3. What does Dijkstra find?
+
+Shortest path from one source node to all other nodes.
+
+---
+
+# Q4. Is Dijkstra for weighted graph?
+
+Yes.
+
+---
+
+# Q5. Can Dijkstra work with negative weights?
+
+No.
+
+VERY important viva point.
