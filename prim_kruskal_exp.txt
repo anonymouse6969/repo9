@@ -1,0 +1,699 @@
+---
+
+# OVERALL GOAL
+
+This program:
+
+* takes weighted graph input
+* finds MST using Kruskal
+* finds MST using Prim
+* prints both results
+
+---
+
+# WHAT IS MST?
+
+MST means:
+
+# Minimum Spanning Tree
+
+It:
+
+* connects all nodes
+* minimum total cost
+* no cycles
+
+---
+
+# PROGRAM STRUCTURE
+
+The whole program has 5 parts:
+
+```text id="jlwm1y"
+1. Kruskal function
+2. Prim function
+3. Take graph input
+4. Call algorithms
+5. Print results
+```
+
+---
+
+# PART 1 — KRUSKAL FUNCTION
+
+---
+
+# FUNCTION HEADER
+
+```python id="jlwm2y"
+def kruskal(n, edges):
+```
+
+Inputs:
+
+* `n` = number of nodes
+* `edges` = list of edges
+
+Example:
+
+```python id="jlwm3y"
+[(0,1,10), (1,2,5)]
+```
+
+Format:
+
+```text id="jlwm4y"
+(u, v, weight)
+```
+
+---
+
+# CREATE PARENT ARRAY
+
+```python id="jlwm5y"
+parent = []
+for i in range(n):
+    parent.append(i)
+```
+
+Suppose:
+
+```python id="jlwm6y"
+n = 4
+```
+
+Then:
+
+```python id="jlwm7y"
+parent = [0,1,2,3]
+```
+
+Meaning:
+
+```text id="jlwm8y"
+Initially every node is its own parent
+```
+
+Used for:
+
+# cycle detection
+
+---
+
+# FIND FUNCTION
+
+```python id="jlwm9y"
+def find(x):
+```
+
+Purpose:
+
+```text id="jlwm0y"
+Find root parent/group of node
+```
+
+---
+
+# EXAMPLE
+
+Suppose:
+
+```python id="njlwm1y"
+parent = [1,2,2,3]
+```
+
+Then:
+
+```python id="njlwm2y"
+find(0)
+```
+
+goes:
+
+```text id="njlwm3y"
+0 → 1 → 2
+```
+
+returns:
+
+```text id="njlwm4y"
+2
+```
+
+Meaning:
+
+```text id="njlwm5y"
+Node 0 belongs to group 2
+```
+
+---
+
+# UNION FUNCTION
+
+```python id="njlwm6y"
+def union(a, b):
+```
+
+Purpose:
+
+```text id="njlwm7y"
+Join two groups
+```
+
+---
+
+# EXAMPLE
+
+If:
+
+```text id="njlwm8y"
+0 and 1 separate
+```
+
+After:
+
+```python id="njlwm9y"
+union(0,1)
+```
+
+they become connected.
+
+---
+
+# SORT EDGES
+
+```python id="njlwm0y"
+for i in range(len(edges)):
+```
+
+and:
+
+```python id="okjlwm1y"
+if edges[i][2] > edges[j][2]:
+```
+
+sort edges according to:
+
+# weight
+
+Because:
+
+```python id="okjlwm2y"
+edge[2]
+```
+
+means weight.
+
+---
+
+# EXAMPLE
+
+Before:
+
+```python id="okjlwm3y"
+[(0,1,10), (1,2,5), (2,3,2)]
+```
+
+After sorting:
+
+```python id="okjlwm4y"
+[(2,3,2), (1,2,5), (0,1,10)]
+```
+
+---
+
+# MAIN KRUSKAL LOGIC
+
+```python id="okjlwm5y"
+if find(u) != find(v):
+```
+
+Meaning:
+
+```text id="okjlwm6y"
+If both nodes belong to different groups
+```
+
+Then:
+
+* safe to connect
+* no cycle formed
+
+---
+
+# CONNECT GROUPS
+
+```python id="okjlwm7y"
+union(u, v)
+```
+
+---
+
+# ADD EDGE INTO MST
+
+```python id="okjlwm8y"
+mst.append(edge)
+```
+
+---
+
+# ADD COST
+
+```python id="okjlwm9y"
+total = total + w
+```
+
+---
+
+# RETURN RESULT
+
+```python id="okjlwm0y"
+return mst, total
+```
+
+Returns:
+
+* MST edges
+* total cost
+
+---
+
+# KRUSKAL MEMORY TRICK
+
+```text id="p0zjlwm"
+Sort edges
+↓
+Pick smallest edge
+↓
+Avoid cycle
+↓
+Repeat
+```
+
+---
+
+# PART 2 — PRIM FUNCTION
+
+---
+
+# FUNCTION HEADER
+
+```python id="p1zjlwm"
+def prim(n, graph):
+```
+
+Input:
+
+* `n` = nodes
+* `graph` = adjacency list
+
+---
+
+# WHAT GRAPH LOOKS LIKE
+
+Example:
+
+```python id="p2zjlwm"
+graph[0] = [(1,10), (2,5)]
+```
+
+Meaning:
+
+```text id="p3zjlwm"
+0 connected to 1 with weight 10
+0 connected to 2 with weight 5
+```
+
+---
+
+# CREATE VISITED ARRAY
+
+```python id="p4zjlwm"
+visited = []
+```
+
+Stores:
+
+# visited nodes
+
+---
+
+# INITIALIZE FALSE
+
+```python id="p5zjlwm"
+visited.append(False)
+```
+
+Meaning:
+
+```text id="p6zjlwm"
+No node visited yet
+```
+
+---
+
+# START FROM NODE 0
+
+```python id="p7zjlwm"
+visited[0] = True
+```
+
+Meaning:
+
+```text id="p8zjlwm"
+Start MST from node 0
+```
+
+---
+
+# MST STORAGE
+
+```python id="p9zjlwm"
+mst = []
+```
+
+Stores selected edges.
+
+---
+
+# TOTAL COST
+
+```python id="p0ajlwm"
+total = 0
+```
+
+---
+
+# MAIN LOOP
+
+```python id="p1ajlwm"
+for i in range(n - 1):
+```
+
+Why `n-1`?
+
+Because:
+
+# MST always has n-1 edges
+
+Very important viva point.
+
+---
+
+# FIND MINIMUM EDGE
+
+```python id="p2ajlwm"
+min_w = 9999
+```
+
+Stores smallest edge weight.
+
+---
+
+# LOOP THROUGH VISITED NODES
+
+```python id="p3ajlwm"
+if visited[j]:
+```
+
+Only expand nodes already in MST.
+
+---
+
+# CHECK NEIGHBOURS
+
+```python id="p4a’wini"
+for k in graph[j]:
+```
+
+Example:
+
+```python id="p5a’wini"
+(2,5)
+```
+
+means:
+
+```text id="p6a’wini"
+node 2 with weight 5
+```
+
+---
+
+# EXTRACT VALUES
+
+```python id="p7a’wini"
+node = k[0]
+weight = k[1]
+```
+
+---
+
+# MOST IMPORTANT CONDITION
+
+```python id="p8a’wini"
+if not visited[node] and weight < min_w:
+```
+
+Meaning:
+
+```text id="p9a’wini"
+Find smallest edge connecting
+visited → unvisited node
+```
+
+This is the heart of Prim.
+
+---
+
+# STORE BEST EDGE
+
+```python id="p0b’wini"
+u = j
+v = node
+```
+
+Stores chosen edge.
+
+---
+
+# MARK NODE VISITED
+
+```python id="p1b’wini"
+visited[v] = True
+```
+
+---
+
+# ADD EDGE INTO MST
+
+```python id="p2b’wini"
+mst.append((u, v, min_w))
+```
+
+---
+
+# UPDATE COST
+
+```python id="p3b’wini"
+total = total + min_w
+```
+
+---
+
+# RETURN RESULT
+
+```python id="p4b’wini"
+return mst, total
+```
+
+---
+
+# PRIM MEMORY TRICK
+
+```text id="p5b’wini"
+Start from node
+↓
+Find smallest connecting edge
+↓
+Add new node
+↓
+Repeat
+```
+
+---
+
+# PART 3 — TAKE INPUT
+
+---
+
+# NUMBER OF NODES
+
+```python id="p6b’wini"
+n = int(input())
+```
+
+---
+
+# NUMBER OF EDGES
+
+```python id="p7b’wini"
+e = int(input())
+```
+
+---
+
+# CREATE STORAGE
+
+```python id="p8b’wini"
+edges = []
+graph = []
+```
+
+---
+
+# CREATE EMPTY ADJACENCY LIST
+
+```python id="p9b’wini"
+graph.append([])
+```
+
+Example:
+
+```python id="p0c’wini"
+graph = [[],[],[],[]]
+```
+
+---
+
+# INPUT EDGES
+
+```python id="p1c’wini"
+u
+v
+w
+```
+
+Meaning:
+
+```text id="p2c’wini"
+source, destination, weight
+```
+
+---
+
+# STORE FOR KRUSKAL
+
+```python id="p3c’wini"
+edges.append((u,v,w))
+```
+
+---
+
+# STORE FOR PRIM
+
+```python id="p4c’wini"
+graph[u].append((v,w))
+graph[v].append((u,w))
+```
+
+Because:
+
+# undirected graph
+
+Both directions needed.
+
+---
+
+# PART 4 — CALL ALGORITHMS
+
+```python id="p5c’wini"
+mst1, cost1 = kruskal(n, edges)
+```
+
+Runs Kruskal.
+
+---
+
+```python id="p6c’wini"
+mst2, cost2 = prim(n, graph)
+```
+
+Runs Prim.
+
+---
+
+# PART 5 — PRINT OUTPUT
+
+```python id="p7c’wini"
+print("Kruskal MST:", mst1)
+```
+
+Prints Kruskal result.
+
+---
+
+```python id="p8c’wini"
+print("Prim MST:", mst2)
+```
+
+Prints Prim result.
+
+---
+
+# ENTIRE PROGRAM IN SIMPLE ENGLISH
+
+```text id="p9c’wini"
+1. Take weighted graph input
+2. Run Kruskal using edges
+3. Run Prim using adjacency list
+4. Print MST and total cost
+```
+
+---
+
+# MOST IMPORTANT DIFFERENCE
+
+| Prim               | Kruskal           |
+| ------------------ | ----------------- |
+| Starts from node   | Starts from edges |
+| Uses visited array | Uses parent array |
+| Grows tree         | Joins groups      |
+
+---
+
+# VERY IMPORTANT VIVA QUESTIONS
+
+---
+
+# Q1. What is MST?
+
+Minimum cost tree connecting all vertices without cycles.
+
+---
+
+# Q2. Why n-1 edges in MST?
+
+Because tree with n vertices always has:
+
+```text id="p0d’wini"
+n - 1 edges
+```
+
+---
+
+# Q3. Why parent array in Kruskal?
+
+To detect cycles.
+
+---
+
+# Q4. Why visited array in Prim?
+
+To track included nodes.
+
+---
+
+# Q5. Why sort edges in Kruskal?
+
+Because Kruskal always selects smallest edge first.
