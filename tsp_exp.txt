@@ -1,0 +1,498 @@
+TSP program.
+
+It uses:
+
+# Greedy Approach
+
+Meaning:
+
+```text id="j1r4ow"
+Always go to nearest unvisited city.
+```
+
+This is exactly the kind of logic colleges expect in beginner AI practicals.
+
+Now let’s understand it deeply step-by-step.
+
+---
+
+# WHAT THIS PROGRAM DOES
+
+It:
+
+* starts from city 0
+* visits nearest unvisited city
+* repeats until all cities visited
+* returns back to starting city
+* calculates total cost
+
+---
+
+# STEP 1 — CREATE DISTANCE MATRIX
+
+```python
+cities = [
+    [0, 10, 15, 20],
+    [10, 0, 35, 25],
+    [15, 35, 0, 30],
+    [20, 25, 30, 0]
+]
+```
+
+This is called:
+
+# adjacency matrix
+
+---
+
+# WHAT IT MEANS
+
+Each row represents distances from one city.
+
+Example:
+
+```python
+cities[0]
+```
+
+becomes:
+
+```python
+[0, 10, 15, 20]
+```
+
+Meaning:
+
+| From City 0 → | Cost |
+| ------------- | ---- |
+| 0             | 0    |
+| 1             | 10   |
+| 2             | 15   |
+| 3             | 20   |
+
+---
+
+# VISUAL GRAPH
+
+```text id="jlwm1s"
+0 ---10--- 1
+|          |
+15         25
+|          |
+2 ---30--- 3
+```
+
+and:
+
+```text id="jlwm2s"
+0 → 3 = 20
+1 → 2 = 35
+```
+
+---
+
+# STEP 2 — VISITED ARRAY
+
+```python
+visited = [False] * 4
+```
+
+Creates:
+
+```python
+[False, False, False, False]
+```
+
+Meaning:
+
+```text id="jlwm3s"
+No city visited yet.
+```
+
+---
+
+# STEP 3 — START FROM CITY 0
+
+```python
+current = 0
+visited[current] = True
+```
+
+Now:
+
+```python
+visited = [True, False, False, False]
+```
+
+Meaning:
+
+```text id="jlwm4s"
+City 0 is visited.
+```
+
+---
+
+# STEP 4 — STORE PATH
+
+```python
+path = [current]
+```
+
+Creates:
+
+```python
+path = [0]
+```
+
+Meaning:
+
+```text id="jlwm5s"
+Journey starts from city 0.
+```
+
+---
+
+# STEP 5 — INITIAL COST
+
+```python
+cost = 0
+```
+
+No travel yet.
+
+---
+
+# STEP 6 — MAIN LOOP
+
+```python
+for i in range(3):
+```
+
+Why 3?
+
+Because:
+
+* total cities = 4
+* already at city 0
+* remaining cities = 3
+
+So loop runs 3 times.
+
+---
+
+# STEP 7 — FIND NEAREST CITY
+
+```python
+minimum = 999
+next_city = -1
+```
+
+Purpose:
+
+```text id="jlwm6s"
+Store smallest distance and nearest city.
+```
+
+---
+
+# STEP 8 — CHECK ALL CITIES
+
+```python
+for j in range(4):
+```
+
+Loop through all cities.
+
+---
+
+# STEP 9 — CHECK UNVISITED CITY
+
+```python
+if not visited[j]
+```
+
+Meaning:
+
+```text id="jlwm7s"
+Only consider cities not yet visited.
+```
+
+---
+
+# STEP 10 — FIND MINIMUM DISTANCE
+
+```python
+cities[current][j] < minimum
+```
+
+Suppose:
+
+```python
+current = 0
+```
+
+Then:
+
+```python
+cities[0]
+```
+
+is:
+
+```python
+[0,10,15,20]
+```
+
+Unvisited cities:
+
+* 1 → 10
+* 2 → 15
+* 3 → 20
+
+Smallest:
+
+```text id="jlwm8s"
+10
+```
+
+So:
+
+```python
+minimum = 10
+next_city = 1
+```
+
+---
+
+# STEP 11 — MARK CITY VISITED
+
+```python
+visited[next_city] = True
+```
+
+Now:
+
+```python
+visited = [True, True, False, False]
+```
+
+---
+
+# STEP 12 — ADD CITY TO PATH
+
+```python
+path.append(next_city)
+```
+
+Now:
+
+```python
+path = [0,1]
+```
+
+---
+
+# STEP 13 — ADD COST
+
+```python
+cost += minimum
+```
+
+Current cost:
+
+```python
+0 + 10 = 10
+```
+
+---
+
+# STEP 14 — MOVE TO NEXT CITY
+
+```python
+current = next_city
+```
+
+Now:
+
+```python
+current = 1
+```
+
+Meaning:
+
+```text id="jlwm9s"
+Salesman is now in city 1.
+```
+
+---
+
+# SECOND ITERATION
+
+Current city:
+
+```python
+1
+```
+
+Distances from city 1:
+
+```python
+[10,0,35,25]
+```
+
+Unvisited cities:
+
+* 2 → 35
+* 3 → 25
+
+Nearest:
+
+```text id="jlwm0s"
+3
+```
+
+So go to city 3.
+
+---
+
+# THIRD ITERATION
+
+Current city:
+
+```python
+3
+```
+
+Remaining city:
+
+```text id="njlwm1s"
+2
+```
+
+Go there.
+
+---
+
+# STEP 15 — RETURN TO START CITY
+
+After all cities visited:
+
+```python
+cost += cities[current][0]
+```
+
+Meaning:
+
+```text id="njlwm2s"
+Return back to city 0
+```
+
+Very important TSP rule.
+
+---
+
+# ADD START CITY TO PATH
+
+```python
+path.append(0)
+```
+
+Final path:
+
+```python
+[0,1,3,2,0]
+```
+
+---
+
+# FINAL OUTPUT
+
+```python
+print("Path:", path)
+print("Total Cost:", cost)
+```
+
+---
+
+# ENTIRE PROGRAM IN SIMPLE ENGLISH
+
+```text id="njlwm3s"
+1. Start from city 0
+2. Find nearest unvisited city
+3. Visit it
+4. Add cost
+5. Repeat until all cities visited
+6. Return to starting city
+```
+
+That is the whole greedy TSP logic.
+
+---
+
+# VERY IMPORTANT UNDERSTANDING
+
+This is:
+
+# Greedy TSP
+
+NOT exact optimal TSP.
+
+Because:
+
+* it only chooses nearest city
+* it does not check all possibilities
+
+But:
+
+* simple
+* fast
+* beginner-friendly
+* acceptable for practicals
+
+---
+
+# MEMORY TRICK
+
+Think:
+
+```text id="njlwm4s"
+Nearest unvisited city first
+```
+
+That single sentence explains the entire program.
+
+---
+
+# IMPORTANT VIVA QUESTIONS
+
+---
+
+# Q1. What is TSP?
+
+Find shortest route visiting all cities exactly once and returning to source.
+
+---
+
+# Q2. Which approach is used here?
+
+Greedy approach.
+
+---
+
+# Q3. Why visited array is needed?
+
+To avoid revisiting cities.
+
+---
+
+# Q4. Why return to city 0?
+
+TSP requires complete cycle/tour.
+
+---
+
+# Q5. Is greedy TSP always optimal?
+
+No.
+
+It gives approximate solution.
