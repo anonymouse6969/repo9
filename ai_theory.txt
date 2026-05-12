@@ -1,0 +1,158 @@
+1. A* Algorithm with Heuristics
+
+A* (A-Star) is a search algorithm used to find the shortest path between a start node and a goal node. 
+It is an informed search algorithm because it uses a heuristic to move intelligently toward the goal.
+
+The A* evaluation function is:
+
+f(n)=g(n)+h(n)
+
+Where:
+
+Term	Meaning
+f(n)	Total estimated cost
+g(n)	Actual cost from start node to current node
+h(n)	Heuristic estimated cost from current node to goal
+
+A* always selects the node with the smallest f(n) value.
+
+Example:
+Maze pathfinding
+Google Maps navigation
+Puzzle solving (8-puzzle)
+
+
+2. Greedy Search
+
+Greedy Search is a search technique that always chooses the best immediate option at each step without considering the complete future path.
+
+It follows:
+
+Choose the locally best option first
+Example:
+
+In Travelling Salesman Problem (TSP):
+
+Start from a city
+Visit nearest unvisited city
+Repeat
+
+Greedy algorithms are:
+
+simple
+fast
+but may not always give optimal solution.
+
+Applications:
+Prim’s Algorithm
+Kruskal’s Algorithm
+Dijkstra’s Algorithm
+Selection Sort
+
+
+3. CSP (Constraint Satisfaction Problem)
+
+A Constraint Satisfaction Problem (CSP) is a problem where values must be assigned to variables while satisfying given constraints.
+
+A CSP has:
+
+Variables
+Domains (possible values)
+Constraints (rules)
+
+Example:
+Map Coloring Problem:
+Adjacent states cannot have same color.
+
+
+Applications:
+Timetable scheduling
+Sudoku solving
+Resource allocation
+
+
+4. BFS and DFS
+BFS (Breadth First Search)
+
+BFS explores nodes level-by-level using a queue.
+
+Flow:
+
+Visit node
+↓
+Add neighbours into queue
+↓
+Repeat
+
+Features:
+Uses Queue
+Finds shortest path in unweighted graph
+Level order traversal
+DFS (Depth First Search)
+
+DFS explores deeply along one path before backtracking.
+
+Flow:
+
+Visit node
+↓
+Go deeper
+↓
+Backtrack
+
+Features:
+Uses Recursion or Stack
+Good for traversal and cycle detection
+
+Difference Between BFS and DFS
+BFS |	DFS
+Uses Queue |	Uses Stack/Recursion
+Level-wise traversal |	Depth-wise traversal
+Shortest path in unweighted graph |	Does not guarantee shortest path
+
+
+5. Rule-Based vs Generative AI Chatbot
+Rule-Based Chatbot
+
+Rule-based chatbots work using predefined rules and keyword matching.
+
+Features:
+Fixed responses
+Works on conditions
+Cannot learn dynamically
+
+Example:
+If user says "hello"
+→ reply "Hi"
+
+Advantages:
+Simple
+Fast
+Easy to build
+
+Disadvantages:
+Limited intelligence
+Cannot handle complex queries
+Generative AI Chatbot
+
+Generative AI chatbots use Artificial Intelligence and Machine Learning to generate responses dynamically.
+
+Features:
+Understands context
+Generates human-like responses
+Learns from large datasets
+
+Examples:
+OpenAI OpenAI
+ ChatGPT
+Google Google AI
+ Gemini
+
+Advantages:
+More intelligent
+Handles complex conversations
+Flexible responses
+
+Disadvantages:
+More computationally expensive
+Requires training data
