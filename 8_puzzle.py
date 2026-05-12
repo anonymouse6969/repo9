@@ -1,3 +1,5 @@
+#8 puzzle
+
 from queue import PriorityQueue
 
 goal = [
